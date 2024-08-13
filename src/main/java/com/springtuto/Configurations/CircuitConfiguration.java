@@ -10,6 +10,8 @@ import java.util.List;
 
 @Configuration
 public class CircuitConfiguration {
+
+    /* "Testing" purposes */
     @Bean
     CommandLineRunner commandLineRunner(CircuitRepository circuitRepository){
         return args -> {

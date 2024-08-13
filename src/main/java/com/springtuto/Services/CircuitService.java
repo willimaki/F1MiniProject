@@ -26,6 +26,12 @@ public class CircuitService {
         this.circuitMapper = circuitMapper;
     }
 
+    /*
+    Using DTO with the Mapper in order to have full control
+    of what I send to the client (even if there are no sensitive information
+    on this project
+     */
+
     public Optional<List<CircuitDTO>> getAllCircuits(){
         try{
             return Optional.of(circuitRepository.findAll()

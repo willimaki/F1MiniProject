@@ -13,6 +13,10 @@ import java.util.function.Function;
 @Service
 public class CircuitMapper implements Function<Circuit, CircuitDTO> {
 
+    /*
+    Mappers : Contains methods to map simplify the request query,
+    doing all the intelligence to create the object in a simple way
+     */
     public Circuit toCircuit(CircuitRequest request){
         try{
             if (request == null){

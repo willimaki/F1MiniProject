@@ -24,19 +24,24 @@ public class CircuitController {
     }
 
     @GetMapping()
-    public Optional<List<CircuitDTO>> getAllCircuits(){
+    public Optional<List<CircuitDTO>> tryGetAllCircuits(){
         return circuitService.getAllCircuits();
     }
 
+
+    // Using ResponseEntity for testing purpose - can be interesting to have full control on HTML response
     @GetMapping("/{circuitId}")
-    public Optional<CircuitDTO> getCircuitsById(@PathVariable Long circuitId){
-        return circuitService.tryGetCircuitById(circuitId);
+    public ResponseEntity<CircuitDTO> tryGetCircuitsById(@PathVariable Long circuitId){
+        return circuitService.tryGetCircuitById(circuitId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-
     @GetMapping("/country")
-    public Optional<List<CircuitDTO>> getCircuitsByCountry(@RequestParam(value="country") String country){
-        return circuitService.tryGetCircuitsByCountry(country);
+    public ResponseEntity<List<CircuitDTO>> tryGetCircuitsByCountry(@RequestParam(value="country") String country){
+        return circuitService.tryGetCircuitsByCountry(country)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping

@@ -2,6 +2,9 @@ package com.springtuto.Requests;
 
 public class CircuitRequest {
 
+    /*
+    Request class to convert it into the real class from the request
+     */
     private String name;
     private String country;
     private double lapLength;
