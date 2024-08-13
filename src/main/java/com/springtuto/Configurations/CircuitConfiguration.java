@@ -17,7 +17,7 @@ public class CircuitConfiguration {
                     "Monza", "Italy",5.793
             );
             Circuit emiliaRomagna = new Circuit(
-                    "Emila Romagna", "Italy",4.909);
+                    "Emilia Romagna", "Italy",4.909);
 
             circuitRepository.saveAll(List.of(monza, emiliaRomagna));
         };

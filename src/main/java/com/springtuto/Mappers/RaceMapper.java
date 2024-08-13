@@ -30,19 +30,28 @@ public class RaceMapper implements Function<Race, RaceDTO> {
                 throw new IllegalStateException("Request cannot be null");
             }else{
                 Race race = new Race();
-                Set<Driver> podium = new HashSet<>();
 
                 race.setCircuit(circuitService.getCircuitByName(request.getCircuit()));
                 race.setDate(request.getDate());
+
                 race.setPole(driverService.getDriverByName(request.getPole()));
                 race.setFastestLap(driverService.getDriverByName(request.getFastestLap()));
                 race.setRaceWinner(driverService.getDriverByName(request.getRaceWinner()));
 
-                for (int i = 0; i < request.getPodium().length; i++) {
-                    podium.add(driverService.getDriverByName(request.getPodium()[i]));
-                }
+                Set<Driver> podium = new HashSet<>();
 
+                if(request.getPodium() != null) {  // Ensure the drivers array is not null
+                    for (String driverName : request.getPodium()) {
+                        Driver driver = driverService.getDriverByName(driverName);
+                        if (driver == null) {
+                            throw new IllegalStateException("Driver not found: " + driverName);
+                        }
+                        podium.add(driver);
+                    }
+                }
                 race.setPodium(podium);
+                race.setRaceType(request.getRaceType());
+
                 return race;
 
             }
@@ -56,12 +65,12 @@ public class RaceMapper implements Function<Race, RaceDTO> {
     public RaceDTO apply(Race race) {
         return new RaceDTO(
                 race.getId(),
-                Optional.of(race.getCircuit().toString()).orElse(""),
                 Optional.of(race.getName()).orElse(""),
+                Optional.of(race.getCircuit().getName()).orElse(""),
                 Optional.of(race.getDate()).orElse(null),
-                Optional.of(race.getPole().toString()).orElse(""),
-                Optional.of(race.getFastestLap().toString()).orElse(""),
-                Optional.of(race.getRaceWinner().toString()).orElse(""),
+                Optional.of(race.getPole().getLastName()).orElse(""),
+                Optional.of(race.getFastestLap().getLastName()).orElse(""),
+                Optional.of(race.getRaceWinner().getLastName()).orElse(""),
                 Optional.of(race.getPodium()
                         .stream()
                         .map(Driver::getLastName)

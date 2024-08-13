@@ -103,7 +103,7 @@ public class Race {
     }
 
     public String getName() {
-        return circuit.getName() + getDate().getYear();
+        return circuit.getName() + " " + getDate().getYear();
     }
 
     public void setName(String name) {
@@ -168,26 +168,6 @@ public class Race {
         if (o == null || getClass() != o.getClass()) return false;
         Race race = (Race) o;
         return Objects.equals(id, race.id) && Objects.equals(circuit, race.circuit) && Objects.equals(date, race.date) && Objects.equals(pole, race.pole) && Objects.equals(fastestLap, race.fastestLap) && Objects.equals(raceWinner, race.raceWinner) && Objects.equals(podium, race.podium) && Objects.equals(drivers, race.drivers) && raceType == race.raceType;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, circuit, date, pole, fastestLap, raceWinner, podium, drivers, raceType);
-    }
-
-    @Override
-    public String toString() {
-        return "Race{" +
-                "id=" + id +
-                ", circuit=" + circuit +
-                ", date=" + date +
-                ", pole=" + pole +
-                ", fastestLap=" + fastestLap +
-                ", raceWinner=" + raceWinner +
-                ", podium=" + podium +
-                ", drivers=" + drivers +
-                ", raceType=" + raceType +
-                '}';
     }
 
     public void createRace(Race race) {

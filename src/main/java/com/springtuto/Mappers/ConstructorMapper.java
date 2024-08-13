@@ -28,15 +28,29 @@ public class ConstructorMapper implements Function<Constructor, ConstructorDTO> 
                 throw new IllegalStateException("Request cannot be null");
             }else{
                 Constructor constructor = new Constructor();
-
                 constructor.setName(request.getName());
                 constructor.setNationality(request.getNationality());
                 constructor.setTeamPrincipal(request.getTeamPrincipal());
 
                 Set<Driver> teamLineup = new HashSet<>();
-                for (int i = 0; i < request.getDrivers().length ; i++) {
-                    teamLineup.add(driverService.getDriverByName(request.getDrivers()[i]));
+
+                if (request.getDrivers() != null) {  // Ensure the drivers array is not null
+                    for (String driverName : request.getDrivers()) {
+                        Driver driver = driverService.getDriverByName(driverName);
+                        if (driver == null) {
+                            throw new IllegalStateException("Driver not found: " + driverName);
+                        }
+
+                        // Optional: Check if the driver is already associated with another constructor
+                        if (driver.getCurrentTeam() != null) {
+                            throw new IllegalStateException("Driver " + driverName + " is already part of another team.");
+                        }
+
+                        teamLineup.add(driver);
+                        driver.setCurrentTeam(constructor);
+                    }
                 }
+
                 constructor.setDriverLineUp(teamLineup);
 
                 return constructor;

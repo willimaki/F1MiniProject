@@ -112,6 +112,7 @@ public class ConstructorService {
 
             if (teamLineUp != null && teamLineUp.size() == 2) {
 
+
             } else {
                 throw new IllegalArgumentException("Team line-up must have exactly 2 drivers");
             }

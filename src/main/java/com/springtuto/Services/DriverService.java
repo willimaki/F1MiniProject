@@ -52,7 +52,16 @@ public class DriverService {
 
     public void createDriver(Driver driver){
         try {
-            driverRepository.save(driver);
+            if(driverRepository.findAll().stream()
+                    .noneMatch(existingDriver ->
+                            existingDriver.getFirstName().equals(driver.getFirstName()) ||
+                                    existingDriver.getLastName().equals(driver.getLastName()) &&
+                                            existingDriver.getBirthDate().equals(driver.getBirthDate())
+                                            )){
+
+            driverRepository.save(driver);}else{
+                throw  new IllegalStateException("Driver already exists.");
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

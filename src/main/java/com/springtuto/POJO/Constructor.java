@@ -22,7 +22,7 @@ public class Constructor {
     private String name;
     private String nationality;
     private String teamPrincipal;
-    @OneToMany(mappedBy = "currentTeam")
+    @OneToMany(mappedBy = "currentTeam", fetch = FetchType.LAZY )
     private Set<Driver> driverLineUp;
 
     public Constructor() {
@@ -89,21 +89,5 @@ public class Constructor {
         if (o == null || getClass() != o.getClass()) return false;
         Constructor that = (Constructor) o;
         return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(nationality, that.nationality) && Objects.equals(teamPrincipal, that.teamPrincipal) && Objects.equals(driverLineUp, that.driverLineUp);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, nationality, teamPrincipal, driverLineUp);
-    }
-
-    @Override
-    public String toString() {
-        return "Constructor{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", nationality='" + nationality + '\'' +
-                ", teamPrincipal='" + teamPrincipal + '\'' +
-                ", driverLineUp=" + driverLineUp +
-                '}';
     }
 }

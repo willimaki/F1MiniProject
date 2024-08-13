@@ -1,11 +1,13 @@
 package com.springtuto.Requests;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.springtuto.POJO.RaceType;
 
 import java.time.LocalDate;
 
 public class RaceRequest {
     private String circuit;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate date;
     private String pole;
     private String fastestLap;
