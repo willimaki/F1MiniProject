@@ -109,4 +109,22 @@ public class DriverService {
             return null;
         }
     }
+
+    public void deleteDriverByName(String name) {
+        try{
+            if(!name.isEmpty() && !name.isBlank()){
+                Driver driver = getDriverByName(name);
+                if(driver != null){
+                    driverRepository.delete(driver);
+                }
+                else{
+                    throw new IllegalStateException("No driver found");
+                }
+            }else{
+                throw new IllegalArgumentException("Name cannot be null");
+            }
+         }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
 }
