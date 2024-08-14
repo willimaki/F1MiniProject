@@ -5,27 +5,29 @@ import com.springtuto.DTOs.ConstructorDTO;
 import com.springtuto.Mappers.ConstructorMapper;
 
 import com.springtuto.POJO.Constructor;
+import com.springtuto.POJO.Driver;
 import com.springtuto.Repositories.ConstructorRepository;
+import com.springtuto.Repositories.DriverRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ConstructorService {
     private final ConstructorRepository constructorRepository;
     private final ConstructorMapper constructorMapper;
-
+    private final DriverService driverService;
 
 
     @Autowired
-    public ConstructorService(ConstructorRepository constructorRepository, ConstructorMapper constructorMapper) {
+    public ConstructorService(ConstructorRepository constructorRepository, ConstructorMapper constructorMapper, DriverService driverService) {
         this.constructorRepository = constructorRepository;
         this.constructorMapper = constructorMapper;
+        this.driverService = driverService;
     }
 
 
@@ -112,8 +114,15 @@ public class ConstructorService {
             }
 
             if (teamLineUp != null && teamLineUp.size() == 2) {
-
-
+                Set<Driver> newLineUp = new HashSet<>();
+                for (String driverNames :teamLineUp) {
+                    Driver driver =  driverService.getDriverByName(driverNames);
+                    if(driver != null) {
+                        newLineUp.add(driver);
+                        driver.setCurrentTeam(constructor);
+                    }
+                }
+                constructor.setDriverLineUp(newLineUp);
             } else {
                 throw new IllegalArgumentException("Team line-up must have exactly 2 drivers");
             }

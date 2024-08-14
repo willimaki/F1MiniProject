@@ -52,6 +52,7 @@ public class DriverService {
 
     public void createDriver(Driver driver){
         try {
+            //Checking if driver do not already exists
             if(driverRepository.findAll().stream()
                     .noneMatch(existingDriver ->
                             existingDriver.getFirstName().equals(driver.getFirstName()) ||

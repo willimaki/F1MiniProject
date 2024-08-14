@@ -25,7 +25,7 @@ public class CircuitController {
 
     @GetMapping()
     public Optional<List<CircuitDTO>> tryGetAllCircuits(){
-        return circuitService.getAllCircuits();
+        return circuitService.tryGetAllCircuits();
     }
 
 

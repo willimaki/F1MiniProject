@@ -23,7 +23,6 @@ public class RaceService {
         this.raceMapper = raceMapper;
     }
 
-
     public Optional<RaceDTO> tryGetRaceById(Long raceId) {
         try {
             return raceRepository.findById(raceId)
@@ -44,7 +43,6 @@ public class RaceService {
             throw new RuntimeException(e);
         }
     }
-
 
     public void createRace(Race race) {
         try {

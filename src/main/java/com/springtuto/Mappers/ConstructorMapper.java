@@ -34,14 +34,15 @@ public class ConstructorMapper implements Function<Constructor, ConstructorDTO> 
 
                 Set<Driver> teamLineup = new HashSet<>();
 
-                if (request.getDrivers() != null) {  // Ensure the drivers array is not null
+                // Ensure the drivers array is not null
+                if (request.getDrivers() != null) {
                     for (String driverName : request.getDrivers()) {
                         Driver driver = driverService.getDriverByName(driverName);
                         if (driver == null) {
                             throw new IllegalStateException("Driver not found: " + driverName);
                         }
 
-                        // Optional: Check if the driver is already associated with another constructor
+                        //Check if the driver is already associated with another constructor
                         if (driver.getCurrentTeam() != null) {
                             throw new IllegalStateException("Driver " + driverName + " is already part of another team.");
                         }

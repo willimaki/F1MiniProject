@@ -32,7 +32,7 @@ public class CircuitService {
     on this project
      */
 
-    public Optional<List<CircuitDTO>> getAllCircuits(){
+    public Optional<List<CircuitDTO>> tryGetAllCircuits(){
         try{
             return Optional.of(circuitRepository.findAll()
                     .stream()
