@@ -43,7 +43,8 @@ public class DriverController {
         return driverService.tryGetDriverByName(name);
     }
 
-    public void deleteDriverbyName(@RequestParam String name){
+    @DeleteMapping("/name")
+    public void deleteDriverByName(@RequestParam String name){
         driverService.deleteDriverByName(name);
     }
 

@@ -72,4 +72,11 @@ public class RaceService {
     }
 
 
+    public void deleteRaceById(Long raceId) {
+        try{
+            raceRepository.deleteById(raceId);
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
 }

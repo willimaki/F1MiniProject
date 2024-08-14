@@ -41,4 +41,9 @@ public class RaceController {
         return raceService.tryGetRaceById(raceId);
     }
 
+    @DeleteMapping("/{raceId}")
+    public void deleteRaceById(@PathVariable Long raceId){
+        raceService.deleteRaceById(raceId);
+    }
+
 }
