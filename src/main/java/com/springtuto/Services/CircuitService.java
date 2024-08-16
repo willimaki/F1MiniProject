@@ -104,6 +104,7 @@ public class CircuitService {
         }
     }
 
+
     public Optional<List<CircuitDTO>> tryGetCircuitsByCountry(String country) {
         try {
             List<Circuit> circuitList = circuitRepository.findAll();
