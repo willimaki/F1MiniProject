@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -109,13 +111,109 @@ class CircuitServiceTest {
     }
 
     @Test
-    @Disabled
-    void updateCircuit() {
+    void updateCircuitWithValidDataProvided() {
+        // Given
+        Long circuitId = 1L;
+        Circuit circuit = new Circuit(circuitId, "Old Name", "Old Country", 3.5);
+        when(circuitRepository.findById(circuitId)).thenReturn(Optional.of(circuit));
+
+        String newName = "New Name";
+        String newCountry = "New Country";
+        Double newLapLength = 4.5;
+
+        // When
+        underTest.updateCircuit(circuitId, newName, newCountry, newLapLength);
+
+        // Then
+        assertEquals(newName, circuit.getName());
+        assertEquals(newCountry, circuit.getCountry());
+        assertEquals(newLapLength, circuit.getLapLength());
+        verify(circuitRepository).findById(circuitId);
     }
 
     @Test
-    @Disabled
-    void deleteCircuitById() {
+    void updateCircuitWithSameData() {
+        // Given
+        Long circuitId = 1L;
+        Circuit circuit = new Circuit(circuitId, "Same Name", "Same Country", 4.4);
+        when(circuitRepository.findById(circuitId)).thenReturn(Optional.of(circuit));
+
+        String sameName = "Same Name";
+        String sameCountry = "Same Country";
+        Double sameLapLength = 4.4;
+
+        // When
+        underTest.updateCircuit(circuitId, sameName, sameCountry, sameLapLength);
+
+        // Then
+        assertEquals("Same Name", circuit.getName());
+        assertEquals("Same Country", circuit.getCountry());
+        assertEquals(4.4, circuit.getLapLength());
+        verify(circuitRepository).findById(circuitId);
+    }
+
+    @Test
+    //Wont pass because of the catch block in CircuitService
+    void updateCircuitWhenCircuitIsNotFound() {
+        // Given
+        Long circuitId = 1L;
+        when(circuitRepository.findById(circuitId)).thenReturn(Optional.empty());
+
+        // When
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            underTest.updateCircuit(circuitId, "New Name", "New Country", 4.5);
+        });
+
+        // Then
+        assertEquals("Circuit n°" + circuitId + "is not found", exception.getMessage());
+        verify(circuitRepository).findById(circuitId);
+    }
+
+    @Test
+    void updateCircuitwithNullValues() {
+        // Given
+        Long circuitId = 1L;
+        Circuit circuit = new Circuit(circuitId, "Old Name", "Old Country", 4.4);
+        when(circuitRepository.findById(circuitId)).thenReturn(Optional.of(circuit));
+
+        // When
+        underTest.updateCircuit(circuitId, null, "", -1.0);
+
+        // Then
+        assertEquals("Old Name", circuit.getName());  // Name should not change
+        assertEquals("Old Country", circuit.getCountry());  // Country should not change
+        assertEquals(4.4, circuit.getLapLength());  // Lap length should not change
+        verify(circuitRepository).findById(circuitId);
+    }
+
+    @Test
+    void deleteCircuitById_whenCircuitExists() {
+        // Given
+        Long circuitId = 1L;
+        when(circuitRepository.existsById(circuitId)).thenReturn(true);
+
+        // When
+        underTest.deleteCircuitById(circuitId);
+
+        // Then
+        verify(circuitRepository, times(1)).deleteById(circuitId);
+    }
+
+    @Test
+        //Wont pass because of the catch block in CircuitService
+    void deleteCircuitById_whenCircuitDoesNotExist() {
+        // Given
+        Long circuitId = 1L;
+        when(circuitRepository.existsById(circuitId)).thenReturn(false);
+
+        // When
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            underTest.deleteCircuitById(circuitId);
+        });
+
+        // Then
+        assertEquals("Circuit n°" + circuitId + "is not found", exception.getMessage());
+        verify(circuitRepository, never()).deleteById(circuitId);
     }
 
     @Test
